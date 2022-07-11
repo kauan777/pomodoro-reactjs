@@ -15,7 +15,7 @@ export function ThemeContextProvider({children}: ThemeContextProviderProps){
 
     const [theme, setTheme] = useState(localStorage.getItem("theme") !== "dark" ? "light" : "dark")
 
-    useEffect(()=>{
+    useEffect(() => {
         const root = window.document.documentElement;
         theme == "light" && root.classList.remove("dark")
         root.classList.add(theme)
