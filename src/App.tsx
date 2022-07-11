@@ -9,7 +9,11 @@ function App() {
   
 
   const COUNTDOWN_INITIAL_TIME_IN_SECONDS = 25 * 60;
+
+  const COUNTDOWN_BREAK_TIME_IN_SECONDS = 5 * 60;
   const [secondsAmount, setSecondsAmount] = useState(COUNTDOWN_INITIAL_TIME_IN_SECONDS);
+
+  const [breakTime, setBreakTime] = useState(false);
 
   const minutes = Math.floor(secondsAmount / 60);
   const seconds = secondsAmount % 60;
@@ -19,7 +23,16 @@ function App() {
   useEffect(() => {
     if (secondsAmount === 0) {
       alert("Acabou");
-      return;
+      if(!breakTime){
+        setSecondsAmount(COUNTDOWN_BREAK_TIME_IN_SECONDS);
+        setBreakTime(true)
+        setIsPlaying(false);  
+        return;
+      }else{
+      setIsPlaying(false);
+        setSecondsAmount(COUNTDOWN_INITIAL_TIME_IN_SECONDS);
+        setBreakTime(false)
+      }
     }
   
     if (isPlaying) {  
@@ -49,7 +62,12 @@ function App() {
   function handleClickReset() {
     setIsPlaying(false);
     clearTimeout(counterTimeoutRef.current);
-    setSecondsAmount(COUNTDOWN_INITIAL_TIME_IN_SECONDS);
+    if(!breakTime){
+      setSecondsAmount(COUNTDOWN_INITIAL_TIME_IN_SECONDS);
+    }else{
+      setSecondsAmount(COUNTDOWN_BREAK_TIME_IN_SECONDS);
+
+    }
   }
 
   return (
@@ -57,6 +75,7 @@ function App() {
       <Header />
       <main className="flex h-[100vh] items-center justify-center">
         <div>
+          <span className="block text-center text-gray-200">{breakTime ? "Time break" : "Time work"}</span>
           <span className="animate-[wiggle_.2s_ease-in-out] text-8xl font-semibold text-gray-500 dark:text-gray-50">{minutes.toString().padStart(2, "0")}:{seconds.toString().padStart(2, "0")}</span>
           <div className="flex gap-2 items-center justify-center">
 
