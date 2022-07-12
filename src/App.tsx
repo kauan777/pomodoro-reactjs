@@ -1,23 +1,26 @@
+import { ModalContainer } from "./components/Modal";
 import { ArrowCounterClockwise, Pause, Play } from "phosphor-react"
 import { MouseEvent, useEffect, useState, useRef } from "react"
 import { Header } from "./components/Header"
+import { useCounter } from "./hook/useCounter";
 
 
 function App() {
 
   const [isPlaying, setIsPlaying] = useState(false);
   
+  const {
+    secondsAmount,
+    setSecondsAmount,
+    COUNTDOWN_BREAK_TIME_IN_SECONDS,
+    COUNTDOWN_INITIAL_TIME_IN_SECONDS,
+    minutes,
+    seconds
+  } = useCounter();
 
-  const COUNTDOWN_INITIAL_TIME_IN_SECONDS = 25 * 60;
 
-  const COUNTDOWN_BREAK_TIME_IN_SECONDS = 5 * 60;
-  const [secondsAmount, setSecondsAmount] = useState(COUNTDOWN_INITIAL_TIME_IN_SECONDS);
-
+  
   const [breakTime, setBreakTime] = useState(false);
-
-  const minutes = Math.floor(secondsAmount / 60);
-  const seconds = secondsAmount % 60;
-
   const counterTimeoutRef = useRef(0);
 
   useEffect(() => {
@@ -37,7 +40,7 @@ function App() {
   
     if (isPlaying) {  
       const ref = setTimeout(() => {
-        setSecondsAmount(state => state - 1);
+        setSecondsAmount((state: number) => state - 1);
       }, 1000);
       counterTimeoutRef.current = ref;
     }
@@ -49,7 +52,7 @@ function App() {
     setIsPlaying(true);
     setTimeout(() => {
      if (event.detail == 1){
-        setSecondsAmount(state => state - 1);
+        setSecondsAmount((state: number) => state - 1);
     }
     },1000)
   }
@@ -73,6 +76,7 @@ function App() {
   return (
     <>
       <Header />
+      <ModalContainer/>
       <main className="flex h-[100vh] items-center justify-center">
         <div>
           <span className="block text-center text-gray-200">{breakTime ? "Time break" : "Time work"}</span>
