@@ -1,48 +1,103 @@
-import { createContext, ReactNode, useState } from "react";
+import { createContext, Dispatch, ReactNode, SetStateAction, useEffect, useState } from "react";
 
 interface CountContextProviderProps {
     children: ReactNode
 }
 
 interface CountContextProps {
-    secondsAmount: number
-    setSecondsAmount: (secondsAmount: any) => void
-    COUNTDOWN_BREAK_TIME_IN_SECONDS: number
-    COUNTDOWN_INITIAL_TIME_IN_SECONDS: number
+    secondsAmount: number,
+    setSecondsAmount: Dispatch<SetStateAction<number>>
 
-    minutes: number
-    seconds: number
+    breakSecondsAmount: number
+    setBreakSecondsAmount: Dispatch<SetStateAction<number>>
 
-    visible: boolean
-    setVisible: (visible: boolean) => void
+    workMinutes: number
+    workSeconds: number
+    breakMinutes: number
+    breakSeconds: number
+
+    workMinutesModal: number
+    setWorkMinutesModal: Dispatch<SetStateAction<number>>
+    
+    workSecondsModal: number
+    setWorkSecondsModal: Dispatch<SetStateAction<number>>
+
+    breakMinutesModal: number
+    setBreakMinutesModal: Dispatch<SetStateAction<number>>
+
+    breakSecondsModal: number
+    setBreakSecondsModal: Dispatch<SetStateAction<number>>
+
 }
 
 export const CounterContext = createContext({} as CountContextProps);
 
 export function CounterContextProvider({children}: CountContextProviderProps){
 
-    const COUNTDOWN_INITIAL_TIME_IN_SECONDS = 23 * 60;
-    const COUNTDOWN_BREAK_TIME_IN_SECONDS = 5 * 60;
+    const [secondsAmount, setSecondsAmount] = useState(parseInt(localStorage.getItem('workSecondsAmount') || "") || 0);
+    const [breakSecondsAmount, setBreakSecondsAmount] = useState(parseInt(localStorage.getItem('breakSecondsAmount') || "") || 0);
+    useEffect(() => {
+        if(secondsAmount == 0){
+            localStorage.setItem('workSecondsAmount', (25 * 60).toString()) 
+        }
+        if(breakSecondsAmount == 0){
+            localStorage.setItem('breakSecondsAmount', (5 * 60).toString()) 
 
-    const [secondsAmount, setSecondsAmount] = useState(COUNTDOWN_INITIAL_TIME_IN_SECONDS);
+        }
+    }, [])
 
-    const minutes = Math.floor(secondsAmount / 60);
-    const seconds = secondsAmount % 60;
+    const [workMinutesModal, setWorkMinutesModal] = useState(0);
+    const [workSecondsModal, setWorkSecondsModal] = useState(0);
 
-    const [visible, setVisible] = useState(false);
+    const [breakMinutesModal, setBreakMinutesModal] = useState(0);
+    const [breakSecondsModal, setBreakSecondsModal] = useState(0);
+
+    useEffect(() => {
+        const workInSeconds = workMinutesModal * 60 + workSecondsModal
+        console.log(workInSeconds)
+        if(workInSeconds !== 0){
+            console.log("atualizou")
+          localStorage.setItem("workSecondsAmount", workInSeconds.toString())
+          setSecondsAmount(workInSeconds)
+        }
+      }, [workMinutesModal, workSecondsModal])
+
+      useEffect(() => {
+        const breakInSeconds = breakMinutesModal * 60 + breakSecondsModal
+        console.log(breakInSeconds)
+        if(breakInSeconds !== 0){
+            console.log("atualizou")
+          localStorage.setItem("breakSecondsAmount", breakInSeconds.toString())
+          setBreakSecondsAmount(breakInSeconds)
+        }
+      }, [breakMinutesModal, breakSecondsModal])
 
     
+    const workMinutes = Math.floor(secondsAmount / 60);
+    const workSeconds = secondsAmount % 60;
+    
+    const breakMinutes = Math.floor(breakSecondsAmount / 60);
+    const breakSeconds = breakSecondsAmount % 60;
+
+
     return(
         <CounterContext.Provider value={{
+            workMinutes,
+            workSeconds,
+            breakMinutes,
+            breakSeconds,
             secondsAmount,
             setSecondsAmount,
-            COUNTDOWN_BREAK_TIME_IN_SECONDS,
-            COUNTDOWN_INITIAL_TIME_IN_SECONDS,
-            minutes, 
-            seconds,
-
-            visible,
-            setVisible
+            breakSecondsAmount,
+            setBreakSecondsAmount,
+            workSecondsModal,
+            workMinutesModal,
+            setWorkSecondsModal,
+            setWorkMinutesModal,
+            breakSecondsModal,
+            setBreakSecondsModal,
+            setBreakMinutesModal,
+            breakMinutesModal
         }}>
             {children}
         </CounterContext.Provider>

@@ -1,15 +1,20 @@
 import { Moon, PencilSimple, Sun } from "phosphor-react";
 import { useTheme } from "../../hook/useTheme";
+import { Dispatch, SetStateAction } from 'react';
 
-export function Header() {
 
+interface HeaderProps {
+    setIsSettingsModalOpen: Dispatch<SetStateAction<boolean>>;
+}
+
+export function Header({ setIsSettingsModalOpen }: HeaderProps) {
     const { theme, setTheme } = useTheme();
 
     return (
-        <header className="px-16 py-8 w-[100%] flex items-center justify-between fixed">
+        <header className="px-8 py-8 w-[100%] lg:px-16 flex items-center justify-between fixed">
             <span className="text-gray-700 dark:text-gray-50">Pomodoro</span>
             <div className="flex gap-4">
-                <button>
+                <button onClick={() => setIsSettingsModalOpen(true)}>
                     <PencilSimple size={24} />
                 </button>
                 <button onClick={() => setTheme(theme == 'light' ? 'dark' : 'light')}>

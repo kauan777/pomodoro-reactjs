@@ -11,7 +11,8 @@
     "@nextui-org/react": "^1.0.0-beta.9",
     "phosphor-react": "^1.4.1",
     "react": "^18.0.0",
-    "react-dom": "^18.0.0"
+    "react-dom": "^18.0.0",
+    "react-hot-toast": "^2.3.0"
   },
   "devDependencies": {
     "@types/react": "^18.0.0",

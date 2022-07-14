@@ -1,6 +1,6 @@
 # COISAS QUE EU PRECISO RESOLVER
 
-- O botão open do modal
-- Criar um contexto pro modal
-- Separar TimeWork de TimeBreak
-- Deixar o modal dark mode
+  [ ] Criar uma pasta utils para fazer a função de converter
+- [ ] Pegar informações do localStorage e mostrar no App
+  [ ] Pegar informações do loaclStorage e mostrar no Modal
+
