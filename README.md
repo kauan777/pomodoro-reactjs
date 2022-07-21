@@ -1,6 +1,3 @@
-# COISAS QUE EU PRECISO RESOLVER
-
-  [ ] Criar uma pasta utils para fazer a função de converter
-- [ ] Pegar informações do localStorage e mostrar no App
-  [ ] Pegar informações do loaclStorage e mostrar no Modal
+# Rode o yarn para instalar as dependências
+# Rode o yarn dev para rodar a aplicação
 
