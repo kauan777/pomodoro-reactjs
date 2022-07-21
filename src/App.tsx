@@ -25,6 +25,8 @@ function App() {
   const [breakTime, setBreakTime] = useState(false);
   const counterTimeoutRef = useRef(0);
 
+
+
   useEffect(() => {
     if (secondsAmount === 0) {
       toast.success('Acabou o trabalho', {

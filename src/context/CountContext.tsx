@@ -8,7 +8,7 @@ interface CountContextProps {
     secondsAmount: number,
     setSecondsAmount: Dispatch<SetStateAction<number>>
 
-    breakSecondsAmount: number
+    breakSecondsAmount: number 
     setBreakSecondsAmount: Dispatch<SetStateAction<number>>
 
     workMinutes: number
@@ -34,15 +34,16 @@ export const CounterContext = createContext({} as CountContextProps);
 
 export function CounterContextProvider({children}: CountContextProviderProps){
 
-    const [secondsAmount, setSecondsAmount] = useState(parseInt(localStorage.getItem('workSecondsAmount') || "") || 0);
-    const [breakSecondsAmount, setBreakSecondsAmount] = useState(parseInt(localStorage.getItem('breakSecondsAmount') || "") || 0);
+    const [secondsAmount, setSecondsAmount] = useState(parseInt(localStorage.getItem('workSecondsAmount') || "") || 1);
+    const [breakSecondsAmount, setBreakSecondsAmount] = useState(parseInt(localStorage.getItem('breakSecondsAmount') || "") || 1);
     useEffect(() => {
-        if(secondsAmount == 0){
+        if(secondsAmount == 1){
             localStorage.setItem('workSecondsAmount', (25 * 60).toString()) 
+            setSecondsAmount(parseInt(localStorage.getItem('workSecondsAmount') || ""));
         }
-        if(breakSecondsAmount == 0){
+        if(breakSecondsAmount == 1){
             localStorage.setItem('breakSecondsAmount', (5 * 60).toString()) 
-
+            setBreakSecondsAmount(parseInt(localStorage.getItem('breakSecondsAmount') || ""))
         }
     }, [])
 
