@@ -1,4 +1,6 @@
 import { createContext, Dispatch, ReactNode, SetStateAction, useEffect, useState } from "react";
+import { Toaster, toast } from "react-hot-toast";
+
 
 interface CountContextProviderProps {
     children: ReactNode
@@ -34,16 +36,26 @@ export const CounterContext = createContext({} as CountContextProps);
 
 export function CounterContextProvider({children}: CountContextProviderProps){
 
-    const [secondsAmount, setSecondsAmount] = useState(parseInt(localStorage.getItem('workSecondsAmount') || "") || 1);
-    const [breakSecondsAmount, setBreakSecondsAmount] = useState(parseInt(localStorage.getItem('breakSecondsAmount') || "") || 1);
+
+
+    const [secondsAmount, setSecondsAmount] = 
+    useState(parseInt(localStorage.getItem('workSecondsAmount') || "") || 1);
+    
+    const [breakSecondsAmount, setBreakSecondsAmount] = 
+    useState(parseInt(localStorage.getItem('breakSecondsAmount') || "") || 1);
+    
     useEffect(() => {
         if(secondsAmount == 1){
             localStorage.setItem('workSecondsAmount', (25 * 60).toString()) 
-            setSecondsAmount(parseInt(localStorage.getItem('workSecondsAmount') || ""));
+            setSecondsAmount(
+                parseInt(localStorage.getItem('workSecondsAmount') || "")
+            );
         }
         if(breakSecondsAmount == 1){
             localStorage.setItem('breakSecondsAmount', (5 * 60).toString()) 
-            setBreakSecondsAmount(parseInt(localStorage.getItem('breakSecondsAmount') || ""))
+            setBreakSecondsAmount(
+                parseInt(localStorage.getItem('breakSecondsAmount') || "")
+            )
         }
     }, [])
 
@@ -55,7 +67,6 @@ export function CounterContextProvider({children}: CountContextProviderProps){
 
     useEffect(() => {
         const workInSeconds = workMinutesModal * 60 + workSecondsModal
-        console.log(workInSeconds)
         if(workInSeconds !== 0){
             console.log("atualizou")
           localStorage.setItem("workSecondsAmount", workInSeconds.toString())
@@ -65,7 +76,6 @@ export function CounterContextProvider({children}: CountContextProviderProps){
 
       useEffect(() => {
         const breakInSeconds = breakMinutesModal * 60 + breakSecondsModal
-        console.log(breakInSeconds)
         if(breakInSeconds !== 0){
             console.log("atualizou")
           localStorage.setItem("breakSecondsAmount", breakInSeconds.toString())

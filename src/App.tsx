@@ -1,9 +1,9 @@
-import { ModalContainer } from "./components/Modal";
-import { ArrowCounterClockwise, Pause, Play } from "phosphor-react"
-import { MouseEvent, useEffect, useState, useRef } from "react"
 import { Header } from "./components/Header"
 import { useCounter } from "./hook/useCounter";
 import { Toaster, toast } from "react-hot-toast";
+import { ModalContainer } from "./components/Modal";
+import { ArrowCounterClockwise, Pause, Play } from "phosphor-react"
+import { MouseEvent, useEffect, useState, useRef } from "react"
 
 
 function App() {
@@ -23,7 +23,29 @@ function App() {
   
   
   const [breakTime, setBreakTime] = useState(false);
+  const [permisson, setPermission] = useState(false)
   const counterTimeoutRef = useRef(0);
+
+
+  const requestNotificationPermission = async () => {
+    const permission = await Notification.requestPermission()
+    if(permission !== "granted"){
+       throw new Error("Permissão negada")
+    }
+    setPermission(true)
+}
+
+  const runNotificationPermission =  async ()  =>{
+    try{
+      await requestNotificationPermission()
+    
+    }catch(err: any){
+      console.log(err.message)
+    }
+    
+  }
+
+  runNotificationPermission();
 
 
 
@@ -34,23 +56,34 @@ function App() {
       })
       setIsPlaying(false);  
       if(!breakTime){
-        setSecondsAmount(parseInt(localStorage.getItem("breakSecondsAmount") || ""));
-        setBreakSecondsAmount(parseInt(localStorage.getItem("breakSecondsAmount") || ""))
+        setSecondsAmount(
+          parseInt(localStorage.getItem("breakSecondsAmount") || "")
+        );
+        
+        setBreakSecondsAmount(
+          parseInt(localStorage.getItem("breakSecondsAmount") || "")
+        );
+
         setBreakTime(true);
         console.log("STOP WORK, START BREAK")
     }
   }
-    console.log(breakSecondsAmount)
     if(breakSecondsAmount == 0){
       toast.success('Acabou o intervalo', {
         duration: 2000
       })
       setIsPlaying(false);
       if(breakTime){
-        console.log("STOP BREAK, START WORK")
-        setSecondsAmount(parseInt(localStorage.getItem("workSecondsAmount") || ""));
-        setBreakSecondsAmount(parseInt(localStorage.getItem("breakSecondsAmount") || ""))
-        setBreakTime(false)
+        setSecondsAmount(
+          parseInt(localStorage.getItem("workSecondsAmount") || "")
+          
+          );
+          setBreakSecondsAmount(
+            parseInt(localStorage.getItem("breakSecondsAmount") || "")
+            );
+            
+            setBreakTime(false)
+            console.log("STOP BREAK, START WORK")
       }
     }
   
@@ -122,7 +155,8 @@ function App() {
               )
             }
             
-            </span>
+            </span> 
+            {!permisson && <span className="block text-red-500 mb-4">Você não ativou a notificação :(</span>}
           <div className="flex gap-2 items-center justify-center">
             
             <button
