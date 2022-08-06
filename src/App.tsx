@@ -1,14 +1,16 @@
 import { Header } from "./components/Header"
 import { useCounter } from "./hook/useCounter";
-import { Toaster, toast } from "react-hot-toast";
+import { Toaster } from "react-hot-toast";
 import { ModalContainer } from "./components/Modal";
 import { ArrowCounterClockwise, Pause, Play } from "phosphor-react"
 import { MouseEvent, useEffect, useState, useRef } from "react"
-
+import { useNotification } from './utils/useNotification'
 
 function App() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
+
+  const {notifyBreakTimeAvaliable, notifyWorkAvaliable} = useNotification();
 
   const { 
     workMinutes,
@@ -51,9 +53,9 @@ function App() {
 
   useEffect(() => {
     if (secondsAmount === 0) {
-      toast.success('Acabou o trabalho', {
-        duration: 2000
-      })
+      
+      notifyBreakTimeAvaliable()
+      
       setIsPlaying(false);  
       if(!breakTime){
         setSecondsAmount(
@@ -69,9 +71,10 @@ function App() {
     }
   }
     if(breakSecondsAmount == 0){
-      toast.success('Acabou o intervalo', {
-        duration: 2000
-      })
+
+      notifyWorkAvaliable()
+
+
       setIsPlaying(false);
       if(breakTime){
         setSecondsAmount(
