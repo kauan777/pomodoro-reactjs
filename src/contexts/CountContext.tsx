@@ -36,13 +36,13 @@ export function CounterContextProvider({
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [isBreakTime, setIsBreakTime] = useState<boolean>(false);
 
-  const counterTimeoutRef = useRef(0);
+  const counterTimeoutRef = useRef(0); // To reset timeout without -1 of the time
+  const SECONDS_AMOUNT_LOCALSTORAGE = localStorage.getItem("secondsAmount"); // Try to take value
+
+  const IS_FIRST_RENDER = useRef(true); // Created to dependencies useEffect
+
   const minutes = Math.floor(secondsAmount / 60);
   const seconds = secondsAmount % 60;
-
-  const SECONDS_AMOUNT_LOCALSTORAGE = localStorage.getItem("secondsAmount");
-
-  console.log("render");
 
   useEffect(() => {
     if (SECONDS_AMOUNT_LOCALSTORAGE) {
@@ -68,6 +68,12 @@ export function CounterContextProvider({
   }, [secondsAmount, isPlaying]);
 
   useEffect(() => {
+    
+    if (IS_FIRST_RENDER) {
+      IS_FIRST_RENDER.current = false;
+      return;
+    }
+
     if (isBreakTime) {
       setIsPlaying(false);
       const SECONDS_AMOUNT_BREAKTIME =
