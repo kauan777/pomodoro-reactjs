@@ -8,6 +8,10 @@ interface Props {
 }
 
 export function ModalContainer({ isModalOpen, setIsModalOpen }: Props) {
+  if (!isModalOpen) {
+    return null;
+  }
+
   const { setSecondsAmount, saveSecondsAmountInLocalStorage } = useCounter();
 
   const [secondsAmountModal, setSecondsAmountModal] = useState<number>(
