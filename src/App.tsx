@@ -3,7 +3,7 @@ import { useCounter } from "./hook/useCounter";
 import { Toaster } from "react-hot-toast";
 import { ModalContainer } from "./components/Modal";
 import { ArrowCounterClockwise, Pause, Play } from "phosphor-react";
-import { MouseEvent, useEffect, useState, useRef } from "react";
+import { useState } from "react";
 import Button from "./components/Button";
 
 function App() {
